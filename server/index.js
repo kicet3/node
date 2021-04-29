@@ -2,16 +2,17 @@ const express = require('express')
 const app = express()
 const port = 5000
 const bodyParser = require('body-parser');
-const cookieParser1 = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 
-const { User } = require("./models/User.js");
+const { User } = require("./models/User");
 
 const config = require('./config/key');
 
 
+app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser1());
+
+app.use(cookieParser());
 
 
 const mongoose =require('mongoose');
@@ -23,7 +24,7 @@ mongoose.connect(config.mongoURI,{
 
 app.get('/',(req,res)=>res.send('Hello World!! 안녕하세요 ~~'))
 
-app.post('/register',(req,res)=>{
+app.post('/register',(req, res)=>{
   //회원 가입 시 필요한 정보 client에서 가져오고 데이터 베이스에 저장한다.
   const user = new User(req.body)
 
@@ -34,7 +35,7 @@ app.post('/register',(req,res)=>{
     })
   })
 })
-
+/*
 app.post('/login',(req,res)=>{
   //요청한 이메일 데이터 베이스에서 찾기
   User.findOne({ email:req.body.email },(err,userInfo)=>{
@@ -58,9 +59,7 @@ app.post('/login',(req,res)=>{
     })
   })
 })
-
-app.get('api/hello',(req,res)=>{
-    res.send("안녕하세요 ~ ")
-})
+*/
+app.get('api/hello',(req,res)=> res.send("안녕하세요 ~ "))
 
 app.listen(port,() => console.log('Example app listening on port ${port}!'))
